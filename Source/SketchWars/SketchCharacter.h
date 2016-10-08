@@ -12,6 +12,9 @@ UCLASS()
 class SKETCHWARS_API ASketchCharacter : public APaperCharacter
 {
 	GENERATED_BODY()
+
+private:
+	bool isAccelerating;
 	
 public:
 	// Sets default values for this character's properties
@@ -27,5 +30,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	UFUNCTION()
-	void TurnRight(float Value);
+	void TurnRight(float val);
+
+	UFUNCTION()
+	void MoveUp(float val);
 };
