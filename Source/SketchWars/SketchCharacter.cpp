@@ -6,7 +6,6 @@
 // Sets default values
 ASketchCharacter::ASketchCharacter() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	viewportSize = GetGameViewportSize();
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -26,7 +25,6 @@ void ASketchCharacter::Tick(float DeltaTime) {
 	auto halfHeight = (bounds.Z / 2);
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, location.ToString());
-	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, viewportSize.ToString());
 	if (location.X + halfWidth < 0.0f) {
 		location.X = 1024.0f + halfWidth;
 	} else if (location.X > 1024.0f + halfWidth) {
@@ -57,14 +55,4 @@ void ASketchCharacter::TurnRight(float val) {
 
 void ASketchCharacter::MoveUp(float val) {
 	AddMovementInput(GetActorUpVector(), val);
-}
-
-FVector2D ASketchCharacter::GetGameViewportSize() {
-	FVector2D Result = FVector2D(1, 1);
-
-	if (GEngine && GEngine->GameViewport) {
-		GEngine->GameViewport->GetViewportSize( /*out*/Result);
-	}
-
-	return Result;
 }

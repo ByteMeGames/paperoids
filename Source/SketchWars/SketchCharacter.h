@@ -12,10 +12,6 @@ UCLASS()
 class SKETCHWARS_API ASketchCharacter : public APaperCharacter
 {
 	GENERATED_BODY()
-
-private:
-	FVector2D viewportSize;
-	FVector2D GetGameViewportSize();
 	
 public:
 	// Sets default values for this character's properties
