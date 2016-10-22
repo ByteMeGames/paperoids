@@ -31,4 +31,11 @@ public:
 
 	UFUNCTION()
 	void MoveUp(float val);
+
+	UFUNCTION()
+	void Fire();
+
+	// Projectile class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class ABullet> ProjectileClass;
 };

@@ -2,6 +2,7 @@
 
 #include "SketchWars.h"
 #include "SketchCharacter.h"
+#include "Bullet.h"
 
 // Sets default values
 ASketchCharacter::ASketchCharacter() {
@@ -44,6 +45,9 @@ void ASketchCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 	// Set up "movement" bindings.
 	InputComponent->BindAxis("TurnRight", this, &ASketchCharacter::TurnRight);
 	InputComponent->BindAxis("Accelerate", this, &ASketchCharacter::MoveUp);
+
+	// Set up 
+	InputComponent->BindAction("Fire", IE_Pressed, this, &ASketchCharacter::Fire);
 }
 
 void ASketchCharacter::TurnRight(float val) {
@@ -55,4 +59,32 @@ void ASketchCharacter::TurnRight(float val) {
 
 void ASketchCharacter::MoveUp(float val) {
 	AddMovementInput(GetActorUpVector(), val);
+}
+
+void ASketchCharacter::Fire() {
+	// Attempt to fire a projectile.
+	if (ProjectileClass) {
+		// Get the camera transform.
+		//FVector CameraLocation;
+		//FRotator CameraRotation;
+		//GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+		// Transform MuzzleOffset from camera space to world space.
+		//FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+		//FRotator MuzzleRotation = CameraRotation;
+		// Skew the aim to be slightly upwards.
+		//MuzzleRotation.Pitch += 10.0f;
+		UWorld* World = GetWorld();
+		if (World) {
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+			SpawnParams.Instigator = Instigator;
+			// Spawn the projectile at the muzzle.
+			ABullet* Projectile = World->SpawnActor<ABullet>(ProjectileClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+			if (Projectile) {
+				// Set the projectile's initial trajectory.
+				Projectile->FireInDirection(GetActorUpVector());
+			}
+		}
+	}
 }
