@@ -63,7 +63,6 @@ void ABullet::FireInDirection(const FVector& ShootDirection) {
 
 void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
 	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass())) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("HIT ASTEROID"));
 		OtherActor->Destroy();
 		this->Destroy();
 	}

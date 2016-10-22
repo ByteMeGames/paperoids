@@ -9,11 +9,13 @@
  * 
  */
 UCLASS()
-class SKETCHWARS_API ASketchWarsGameMode : public AGameMode
-{
+class SKETCHWARS_API ASketchWarsGameMode : public AGameMode {
 	GENERATED_BODY()
 	
-	
-	
-	
+public:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
 };
