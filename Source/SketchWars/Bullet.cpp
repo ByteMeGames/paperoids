@@ -2,6 +2,7 @@
 
 #include "SketchWars.h"
 #include "Bullet.h"
+#include "Asteroid.h"
 
 
 // Sets default values
@@ -10,10 +11,10 @@ ABullet::ABullet() {
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Use a sphere as a simple collision representation.
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
-	// Set the sphere's collision radius.
-	CollisionComponent->InitSphereRadius(15.0f);
-	// Set the root component to be the collision component.
+	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	CollisionComponent->BodyInstance.SetCollisionProfileName(TEXT("Bullet"));
+	CollisionComponent->OnComponentHit.AddDynamic(this, &ABullet::OnHit);
+	CollisionComponent->InitBoxExtent(FVector(5.0f, 0.0f, 5.0f));
 	RootComponent = CollisionComponent;
 
 	// Use this component to drive this projectile's movement.
@@ -21,7 +22,6 @@ ABullet::ABullet() {
 	ProjectileMovementComponent->SetUpdatedComponent(CollisionComponent);
 	ProjectileMovementComponent->InitialSpeed = 1000.0f;
 	ProjectileMovementComponent->MaxSpeed = 1000.0f;
-	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bShouldBounce = false;
 	ProjectileMovementComponent->ProjectileGravityScale = 0;
 
@@ -59,4 +59,12 @@ void ABullet::Tick( float DeltaTime ) {
 // Function that initializes the projectile's velocity in the shoot direction.
 void ABullet::FireInDirection(const FVector& ShootDirection) {
 	ProjectileMovementComponent->Velocity = ShootDirection * ProjectileMovementComponent->InitialSpeed;
+}
+
+void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
+	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass())) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("HIT ASTEROID"));
+		OtherActor->Destroy();
+		this->Destroy();
+	}
 }
