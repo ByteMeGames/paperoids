@@ -37,6 +37,23 @@ void ABullet::BeginPlay() {
 // Called every frame
 void ABullet::Tick( float DeltaTime ) {
 	Super::Tick( DeltaTime );
+
+	auto location = GetActorLocation();
+	FVector bounds, origin;
+	GetActorBounds(false, origin, bounds);
+	auto halfWidth = (bounds.X / 2);
+	auto halfHeight = (bounds.Z / 2);
+
+	if (location.X + halfWidth < 0.0f) {
+		location.X = 1024.0f + halfWidth;
+	} else if (location.X > 1024.0f + halfWidth) {
+		location.X = 0 - halfWidth;
+	} else if (location.Z + halfHeight < 0.0f) {
+		location.Z = 768.0f + halfHeight;
+	} else if (location.Z > 768.0f + halfHeight) {
+		location.Z = 0 - halfHeight;
+	}
+	SetActorLocation(location, false, nullptr, ETeleportType::TeleportPhysics);
 }
 
 // Function that initializes the projectile's velocity in the shoot direction.
