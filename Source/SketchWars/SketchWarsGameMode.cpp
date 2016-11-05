@@ -20,7 +20,7 @@ void ASketchWarsGameMode::Tick(float DeltaSeconds) {
 		TArray<AActor*> FoundSpawns;
 		UGameplayStatics::GetAllActorsOfClass(World, ATargetPoint::StaticClass(), FoundSpawns);
 
-		/*if (FoundActors.Num() <= 4) {
+		if (FoundActors.Num() <= 4) {
 			int32 index = FMath::RandRange(0, FoundSpawns.Num() - 1);
 			FActorSpawnParameters SpawnParams;
 			SpawnParams.Owner = this;
@@ -28,6 +28,6 @@ void ASketchWarsGameMode::Tick(float DeltaSeconds) {
 
 			AActor* Spawn = FoundSpawns[index];
 			World->SpawnActor<AAsteroid>(AsteroidClass, Spawn->GetActorLocation() , Spawn->GetActorRotation(), SpawnParams);
-		}*/
+		}
 	}
 }
