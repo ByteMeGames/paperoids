@@ -18,4 +18,8 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
+
+	// Projectile class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Asteroids)
+	TSubclassOf<class AAsteroid> AsteroidClass;
 };
