@@ -40,7 +40,7 @@ void AAsteroid::Tick( float DeltaTime ) {
 	Super::Tick( DeltaTime );
 
 	auto location = GetActorLocation();
-	auto halfWidth = CollisionComponent->GetScaledSphereRadius()*2;
+	auto halfWidth = CollisionComponent->GetScaledSphereRadius()*1.75;
 
 	if (location.X + halfWidth < 0.0f) {
 		location.X = 1024.0f + halfWidth;
