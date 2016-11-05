@@ -3,7 +3,6 @@
 #include "SketchWars.h"
 #include "SketchCharacter.h"
 #include "Bullet.h"
-
 // Sets default values
 ASketchCharacter::ASketchCharacter() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
