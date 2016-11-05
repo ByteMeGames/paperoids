@@ -38,4 +38,7 @@ public:
 	// Projectile class to spawn.
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	TSubclassOf<class ABullet> ProjectileClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Lives")
+	int32 NumLives;
 };

@@ -34,5 +34,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Sprites")
 	class UPaperSpriteComponent* SpriteComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Scoring")
 	int32 ScoreValue;
 };
