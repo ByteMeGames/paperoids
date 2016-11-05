@@ -3,6 +3,7 @@
 #include "SketchWars.h"
 #include "Bullet.h"
 #include "Asteroid.h"
+#include "SketchHUD.h"
 
 
 // Sets default values
@@ -63,7 +64,10 @@ void ABullet::FireInDirection(const FVector& ShootDirection) {
 
 void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
 	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass())) {
-		OtherActor->Destroy();
+		auto Hud = Cast<ASketchHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
+		auto Asteroid = Cast<AAsteroid>(OtherActor);
+		Hud->IncrementScore(Asteroid->ScoreValue);
+		Asteroid->Destroy();
 		this->Destroy();
 	}
 }

@@ -28,6 +28,8 @@ AAsteroid::AAsteroid() {
 
 	SpriteComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("SpriteComponent"));
 	SpriteComponent->AttachTo(RootComponent);
+
+	ScoreValue = 10;
 }
 
 // Called when the game starts or when spawned
