@@ -3,11 +3,15 @@
 #include "SketchWars.h"
 #include "SketchCharacter.h"
 #include "Bullet.h"
+#include "Asteroid.h"
+
 // Sets default values
 ASketchCharacter::ASketchCharacter() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	NumLives = 3;
+
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ASketchCharacter::OnHit);
 }
 
 // Called when the game starts or when spawned
@@ -76,5 +80,12 @@ void ASketchCharacter::Fire() {
 				Projectile->FireInDirection(GetActorUpVector());
 			}
 		}
+	}
+}
+
+void ASketchCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Colliding"));
+	if (OtherActor != this && OtherActor->IsA(ASketchCharacter::StaticClass())) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Collided with an asteroid"));
 	}
 }

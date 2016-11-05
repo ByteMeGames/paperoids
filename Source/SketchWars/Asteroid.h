@@ -36,7 +36,4 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Scoring")
 	int32 ScoreValue;
-
-	UFUNCTION()
-	void OnHit(class UPrimitiveComponent* HitComp, class AActor* Actor, class UPrimitiveComponent* Other, FVector Impulse, const FHitResult & HitResult);
 };

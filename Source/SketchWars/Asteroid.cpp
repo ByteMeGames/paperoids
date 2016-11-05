@@ -14,10 +14,10 @@ AAsteroid::AAsteroid() {
 
 	// Use a sphere as a simple collision representation.
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+	CollisionComponent->BodyInstance.SetCollisionProfileName(TEXT("Asteroid"));
 	CollisionComponent->InitSphereRadius(15.0f);
-	CollisionComponent->OnComponentHit.AddDynamic(this, &AAsteroid::OnHit);
 	RootComponent = CollisionComponent;
-
+	
 	// Set up movement
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	ProjectileMovementComponent->SetUpdatedComponent(CollisionComponent);
@@ -59,11 +59,4 @@ void AAsteroid::Tick( float DeltaTime ) {
 
 	auto rotator = FRotator::MakeFromEuler(FVector(0.0f, RotationRate, 0.0f));
 	SpriteComponent->AddWorldRotation(rotator);
-}
-
-void AAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Colliding"));
-	if (OtherActor != this && OtherActor->IsA(ASketchCharacter::StaticClass())) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Collided with an asteroid"));
-	}
 }

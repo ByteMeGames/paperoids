@@ -41,4 +41,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Lives")
 	int32 NumLives;
+
+	UFUNCTION()
+	void OnHit(class UPrimitiveComponent* HitComp, class AActor* Actor, class UPrimitiveComponent* Other, FVector Impulse, const FHitResult & HitResult);
 };
