@@ -45,7 +45,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	TSubclassOf<class ABullet> ProjectileClass;
 
-	UPROPERTY(VisibleAnywhere, Category = "Lives")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lives")
 	int32 NumLives;
 
 	UFUNCTION()
@@ -54,4 +54,10 @@ public:
 	UFUNCTION()
 	void Respawn();
 	void AdvanceRespawnTimer();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Score")
+	int32 Score;
+
+	inline void SetScore(int32 Score) { this->Score = Score; }
+	inline void IncrementScore(int32 Increment) { this->Score += Increment; }
 };
