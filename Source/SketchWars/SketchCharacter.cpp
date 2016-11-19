@@ -17,6 +17,7 @@ ASketchCharacter::ASketchCharacter() {
 // Called when the game starts or when spawned
 void ASketchCharacter::BeginPlay() {
 	Super::BeginPlay();
+	InitialTransform = FTransform(GetActorTransform());
 }
 
 // Called every frame
@@ -84,8 +85,21 @@ void ASketchCharacter::Fire() {
 }
 
 void ASketchCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Colliding"));
-	if (OtherActor != this && OtherActor->IsA(ASketchCharacter::StaticClass())) {
+	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass())) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Collided with an asteroid"));
+		this->Respawn();
+	}
+}
+
+void ASketchCharacter::Respawn() {
+	NumLives--;
+	UWorld* World = GetWorld();
+
+	if (World) {
+		TArray<AActor*> FoundPlayerStarts;
+		UGameplayStatics::GetAllActorsOfClass(World, APlayerStart::StaticClass(), FoundPlayerStarts);
+
+		GetMovementComponent()->StopMovementImmediately();
+		SetActorTransform(InitialTransform);
 	}
 }

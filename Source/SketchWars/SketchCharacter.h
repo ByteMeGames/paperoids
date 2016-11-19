@@ -12,6 +12,9 @@ UCLASS()
 class SKETCHWARS_API ASketchCharacter : public APaperCharacter
 {
 	GENERATED_BODY()
+
+private:
+	FTransform InitialTransform;
 	
 public:
 	// Sets default values for this character's properties
@@ -44,4 +47,7 @@ public:
 
 	UFUNCTION()
 	void OnHit(class UPrimitiveComponent* HitComp, class AActor* Actor, class UPrimitiveComponent* Other, FVector Impulse, const FHitResult & HitResult);
+
+	UFUNCTION()
+	void Respawn();
 };
