@@ -15,6 +15,9 @@ class SKETCHWARS_API ASketchCharacter : public APaperCharacter
 
 private:
 	FTransform InitialTransform;
+	bool IsRespawning;
+	int32 RespawnCountdownTime;
+	FTimerHandle RespawnCountdownTimerHandle;
 	
 public:
 	// Sets default values for this character's properties
@@ -50,4 +53,5 @@ public:
 
 	UFUNCTION()
 	void Respawn();
+	void AdvanceRespawnTimer();
 };

@@ -4,13 +4,15 @@
 #include "SketchCharacter.h"
 #include "Bullet.h"
 #include "Asteroid.h"
+#include "PaperFlipbookComponent.h"
 
 // Sets default values
-ASketchCharacter::ASketchCharacter() {
+ASketchCharacter::ASketchCharacter() :
+	NumLives(3),
+	IsRespawning(false),
+	RespawnCountdownTime(360) {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	NumLives = 3;
-
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ASketchCharacter::OnHit);
 }
 
@@ -85,7 +87,7 @@ void ASketchCharacter::Fire() {
 }
 
 void ASketchCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass())) {
+	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass()) && !IsRespawning) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Collided with an asteroid"));
 		this->Respawn();
 	}
@@ -101,5 +103,19 @@ void ASketchCharacter::Respawn() {
 
 		GetMovementComponent()->StopMovementImmediately();
 		SetActorTransform(InitialTransform);
+		IsRespawning = true;
+		GetWorldTimerManager().SetTimer(RespawnCountdownTimerHandle, this, &ASketchCharacter::AdvanceRespawnTimer, 0.01f, true);
+	}
+}
+
+void ASketchCharacter::AdvanceRespawnTimer() {
+	RespawnCountdownTime--;
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(RespawnCountdownTime));
+
+	if (RespawnCountdownTime <= 0) {
+		IsRespawning = false;
+		RespawnCountdownTime = 360;
+		GetWorldTimerManager().ClearTimer(RespawnCountdownTimerHandle);
 	}
 }
