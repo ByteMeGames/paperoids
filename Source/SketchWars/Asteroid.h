@@ -5,6 +5,9 @@
 #include "GameFramework/Actor.h"
 #include "Asteroid.generated.h"
 
+// Define the size of the asteroids
+enum class Size { LARGE, MEDIUM, SMALL };
+
 UCLASS()
 class SKETCHWARS_API AAsteroid : public AActor
 {
@@ -13,12 +16,15 @@ class SKETCHWARS_API AAsteroid : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AAsteroid();
+	AAsteroid(Size size);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
+
+	void SpawnFragments();
 
 	// Sphere collision component.
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
@@ -36,4 +42,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Scoring")
 	int32 ScoreValue;
+
+	void SetSize(Size size);
+
+	// Projectile class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Asteroids)
+	TSubclassOf<class AAsteroid> RespawnClass;
+
+
+private:
+	Size AsteroidSize;
 };

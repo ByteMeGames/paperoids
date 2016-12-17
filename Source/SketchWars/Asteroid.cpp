@@ -6,9 +6,8 @@
 
 #include "PaperSpriteComponent.h"
 
-
 // Sets default values
-AAsteroid::AAsteroid() {
+AAsteroid::AAsteroid(Size size) : AsteroidSize(size) {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -34,9 +33,28 @@ AAsteroid::AAsteroid() {
 	ScoreValue = 10;
 }
 
+AAsteroid::AAsteroid() : AAsteroid(Size::LARGE) {}
+
 // Called when the game starts or when spawned
 void AAsteroid::BeginPlay() {
 	Super::BeginPlay();
+}
+
+void AAsteroid::SpawnFragments() {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Beginning destroy"));
+	UWorld* World = GetWorld();
+
+	if (RespawnClass && World) {
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = Instigator;
+
+		FRotator Rotation1 = this->GetActorRotation().Add(90, 0, 0);
+		FRotator Rotation2 = this->GetActorRotation().Add(-90, 0, 0);
+
+		auto NewAsteroid1 = World->SpawnActor<AAsteroid>(RespawnClass, this->GetActorLocation(), Rotation1, SpawnParams);
+		auto NewAsteroid2 = World->SpawnActor<AAsteroid>(RespawnClass, this->GetActorLocation(), Rotation2, SpawnParams);
+	}
 }
 
 // Called every frame
@@ -59,4 +77,8 @@ void AAsteroid::Tick( float DeltaTime ) {
 
 	auto rotator = FRotator::MakeFromEuler(FVector(0.0f, RotationRate, 0.0f));
 	SpriteComponent->AddWorldRotation(rotator);
+}
+
+void AAsteroid::SetSize(Size size) {
+	AsteroidSize = size;
 }
