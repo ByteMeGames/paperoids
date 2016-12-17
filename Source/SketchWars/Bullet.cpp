@@ -67,6 +67,7 @@ void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitive
 		auto Player = Cast<ASketchCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 		auto Asteroid = Cast<AAsteroid>(OtherActor);
 		Player->IncrementScore(Asteroid->ScoreValue);
+		Asteroid->SpawnFragments();
 		Asteroid->Destroy();
 		this->Destroy();
 	}
