@@ -49,6 +49,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Asteroids)
 	TSubclassOf<class AAsteroid> RespawnClass;
 
+	// Function that is called when the projectile hits something.
+	UFUNCTION()
+	void OnHit(class UPrimitiveComponent* HitComp, class AActor* Actor, class UPrimitiveComponent* Other, FVector Impulse, const FHitResult & HitResult);
+
 private:
 	Size AsteroidSize;
 };
