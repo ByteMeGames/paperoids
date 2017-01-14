@@ -24,7 +24,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	void SpawnFragments();
+	void SpawnFragments(FRotator rot);
 
 	// Sphere collision component.
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
@@ -48,7 +48,6 @@ public:
 	// Projectile class to spawn.
 	UPROPERTY(EditDefaultsOnly, Category = Asteroids)
 	TSubclassOf<class AAsteroid> RespawnClass;
-
 
 private:
 	Size AsteroidSize;
