@@ -37,6 +37,13 @@ void ATieFighter::BeginPlay() {
 // Called every frame
 void ATieFighter::Tick( float DeltaTime ) {
 	Super::Tick( DeltaTime );
+	auto Loc = GetActorLocation();
+	FVector Bounds, Origin;
+	GetActorBounds(false, Origin, Bounds);
+
+	if (Loc.X >= (1024.0f + Bounds.X) || Loc.X <= (0.0f - Bounds.X)) {
+		this->Destroy();
+	}
 }
 
 void ATieFighter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
