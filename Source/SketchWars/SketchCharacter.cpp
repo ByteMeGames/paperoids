@@ -59,13 +59,13 @@ void ASketchCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 
 void ASketchCharacter::TurnRight(float val) {
 	auto localTransform = GetActorTransform();
-	auto rotator = FRotator::MakeFromEuler(FVector(0.0f, val*-5.0f, 0.0f));
+	auto rotator = FRotator::MakeFromEuler(FVector(0.0f, val*-2.0f, 0.0f));
 	localTransform.ConcatenateRotation(rotator.Quaternion());
 	SetActorTransform(FTransform(localTransform));
 }
 
 void ASketchCharacter::MoveUp(float val) {
-	AddMovementInput(GetActorUpVector(), val);
+	AddMovementInput(GetActorUpVector(), val*0.5f);
 }
 
 void ASketchCharacter::Fire() {
