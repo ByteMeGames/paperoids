@@ -22,4 +22,10 @@ public:
 	// Projectile class to spawn.
 	UPROPERTY(EditDefaultsOnly, Category = Asteroids)
 	TSubclassOf<class AAsteroid> AsteroidClass;
+
+	// Enemy class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Asteroids)
+	TSubclassOf<class ATieFighter> EnemyClass;
+
+	void SpawnTieFighter();
 };
