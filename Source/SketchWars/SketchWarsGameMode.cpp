@@ -4,9 +4,11 @@
 #include "SketchWarsGameMode.h"
 
 #include "Asteroid.h"
+#include "TieFighter.h"
 
 void ASketchWarsGameMode::BeginPlay() {
 	Super::BeginPlay();
+	SpawnTieFighter();
 }
 
 void ASketchWarsGameMode::Tick(float DeltaSeconds) {
@@ -27,7 +29,31 @@ void ASketchWarsGameMode::Tick(float DeltaSeconds) {
 			SpawnParams.Instigator = Instigator;
 
 			AActor* Spawn = FoundSpawns[index];
-			World->SpawnActor<AAsteroid>(AsteroidClass, Spawn->GetActorLocation() , Spawn->GetActorRotation(), SpawnParams);
+			World->SpawnActor<AAsteroid>(
+				AsteroidClass, 
+				Spawn->GetActorLocation(),
+				Spawn->GetActorRotation(),
+				SpawnParams
+			);
 		}
+	}
+}
+
+void ASketchWarsGameMode::SpawnTieFighter() {
+	UWorld* World = GetWorld();
+
+	if (EnemyClass && World) {
+		float SpawnZ = FMath::FRandRange(100.0f, 700.0f);
+		bool GoRight = FMath::RandBool();
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = Instigator;
+
+		World->SpawnActor<ATieFighter>(
+			EnemyClass,
+			FVector((GoRight) ? 0.0f : 1024.0f, 0.0f, SpawnZ),
+			FRotator((GoRight) ?  0.0f : 180.0f, 0.0f, 0.0f),
+			SpawnParams
+		);
 	}
 }

@@ -3,32 +3,32 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Bullet.generated.h"
+#include "TieFighter.generated.h"
 
 UCLASS()
-class SKETCHWARS_API ABullet : public AActor {
+class SKETCHWARS_API ATieFighter : public AActor {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABullet();
+	ATieFighter();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	// Sphere collision component.
-	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
-	UBoxComponent* CollisionComponent;
+	UPROPERTY(VisibleDefaultsOnly, Category = Sprite)
+	class UPaperSpriteComponent* SpriteComponent;
 
 	// Projectile movement component.
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
-	// Function that initializes the projectile's velocity in the shoot direction.
-	void FireInDirection(const FVector& ShootDirection);
+	UPROPERTY(EditDefaultsOnly, Category = "Scoring")
+	int32 ScoreValue;
 
 	// Function that is called when the projectile hits something.
 	UFUNCTION()

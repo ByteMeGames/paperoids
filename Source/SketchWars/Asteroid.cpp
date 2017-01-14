@@ -40,8 +40,7 @@ void AAsteroid::BeginPlay() {
 	Super::BeginPlay();
 }
 
-void AAsteroid::SpawnFragments() {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Beginning destroy"));
+void AAsteroid::SpawnFragments(FRotator rot) {
 	UWorld* World = GetWorld();
 
 	if (RespawnClass && World) {
@@ -49,8 +48,8 @@ void AAsteroid::SpawnFragments() {
 		SpawnParams.Owner = this;
 		SpawnParams.Instigator = Instigator;
 
-		FRotator Rotation1 = this->GetActorRotation().Add(90, 0, 0);
-		FRotator Rotation2 = this->GetActorRotation().Add(-90, 0, 0);
+		FRotator Rotation1 = rot.Add(90, 0, 0);
+		FRotator Rotation2 = FRotator(rot).Add(-90, 0, 0);
 
 		auto NewAsteroid1 = World->SpawnActor<AAsteroid>(RespawnClass, this->GetActorLocation(), Rotation1, SpawnParams);
 		auto NewAsteroid2 = World->SpawnActor<AAsteroid>(RespawnClass, this->GetActorLocation(), Rotation2, SpawnParams);
