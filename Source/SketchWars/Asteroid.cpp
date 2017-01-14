@@ -2,6 +2,7 @@
 
 #include "SketchWars.h"
 #include "Asteroid.h"
+#include "Bullet.h"
 #include "SketchCharacter.h"
 
 #include "PaperSpriteComponent.h"
@@ -14,6 +15,7 @@ AAsteroid::AAsteroid(Size size) : AsteroidSize(size) {
 	// Use a sphere as a simple collision representation.
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	CollisionComponent->BodyInstance.SetCollisionProfileName(TEXT("Asteroid"));
+	CollisionComponent->OnComponentHit.AddDynamic(this, &AAsteroid::OnHit);
 	CollisionComponent->InitSphereRadius(15.0f);
 	RootComponent = CollisionComponent;
 	
@@ -80,4 +82,15 @@ void AAsteroid::Tick( float DeltaTime ) {
 
 void AAsteroid::SetSize(Size size) {
 	AsteroidSize = size;
+}
+
+void AAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
+	if (OtherActor != this && OtherActor->IsA(ABullet::StaticClass())) {
+		auto Player = Cast<ASketchCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+		auto Bullet = Cast<ABullet>(OtherActor);
+		Player->IncrementScore(ScoreValue);
+		SpawnFragments(Bullet->GetActorRotation());
+		Bullet->Destroy();
+		Destroy();
+	}
 }

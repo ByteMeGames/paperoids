@@ -2,8 +2,6 @@
 
 #include "SketchWars.h"
 #include "Bullet.h"
-#include "Asteroid.h"
-#include "SketchCharacter.h"
 
 
 // Sets default values
@@ -14,7 +12,6 @@ ABullet::ABullet() {
 	// Use a sphere as a simple collision representation.
 	CollisionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	CollisionComponent->BodyInstance.SetCollisionProfileName(TEXT("Bullet"));
-	CollisionComponent->OnComponentHit.AddDynamic(this, &ABullet::OnHit);
 	CollisionComponent->InitBoxExtent(FVector(5.0f, 0.0f, 5.0f));
 	RootComponent = CollisionComponent;
 
@@ -60,15 +57,4 @@ void ABullet::Tick( float DeltaTime ) {
 // Function that initializes the projectile's velocity in the shoot direction.
 void ABullet::FireInDirection(const FVector& ShootDirection) {
 	ProjectileMovementComponent->Velocity = ShootDirection * ProjectileMovementComponent->InitialSpeed;
-}
-
-void ABullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass())) {
-		auto Player = Cast<ASketchCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
-		auto Asteroid = Cast<AAsteroid>(OtherActor);
-		Player->IncrementScore(Asteroid->ScoreValue);
-		Asteroid->SpawnFragments(this->GetActorRotation());
-		Asteroid->Destroy();
-		this->Destroy();
-	}
 }
