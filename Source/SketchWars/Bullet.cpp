@@ -26,8 +26,8 @@ ABullet::ABullet() {
 	ProjectileMovementComponent->bShouldBounce = false;
 	ProjectileMovementComponent->ProjectileGravityScale = 0;
 
-	// Die after 3 seconds.
-	InitialLifeSpan = 3.0f;
+	// Die after 1 seconds.
+	InitialLifeSpan = 0.5f;
 }
 
 // Called when the game starts or when spawned
