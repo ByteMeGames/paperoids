@@ -88,7 +88,6 @@ void ASketchCharacter::Fire() {
 
 void ASketchCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
 	if (OtherActor != this && OtherActor->IsA(AAsteroid::StaticClass()) && !IsRespawning) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Collided with an asteroid"));
 		this->Respawn();
 	}
 }
