@@ -18,6 +18,8 @@ private:
 	bool IsRespawning;
 	int32 RespawnCountdownTime;
 	FTimerHandle RespawnCountdownTimerHandle;
+	float CurrentAlpha;
+	bool FadingIn;
 	
 public:
 	// Sets default values for this character's properties
