@@ -103,18 +103,24 @@ void ASketchCharacter::Respawn() {
 		GetMovementComponent()->StopMovementImmediately();
 		SetActorTransform(InitialTransform);
 		IsRespawning = true;
+		CurrentAlpha = 1.0f;
+		FadingIn = false;
 		GetWorldTimerManager().SetTimer(RespawnCountdownTimerHandle, this, &ASketchCharacter::AdvanceRespawnTimer, 0.01f, true);
 	}
 }
 
 void ASketchCharacter::AdvanceRespawnTimer() {
+	CurrentAlpha += (FadingIn ? 0.02f : -0.02f);
+	if (CurrentAlpha >= 1.0f || CurrentAlpha <= 0.5f) {
+		FadingIn = !FadingIn;
+	}
+	GetSprite()->SetSpriteColor(FLinearColor(1.0f, 1.0f, 1.0f, CurrentAlpha));
+
 	RespawnCountdownTime--;
-
-	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(RespawnCountdownTime));
-
 	if (RespawnCountdownTime <= 0) {
 		IsRespawning = false;
 		RespawnCountdownTime = 360;
 		GetWorldTimerManager().ClearTimer(RespawnCountdownTimerHandle);
+		GetSprite()->SetSpriteColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
