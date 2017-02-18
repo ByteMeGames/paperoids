@@ -8,7 +8,7 @@
 
 
 // Sets default values
-ATieFighter::ATieFighter() {
+ATieFighter::ATieFighter() : RemainingFireTime(100) {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -32,6 +32,7 @@ ATieFighter::ATieFighter() {
 // Called when the game starts or when spawned
 void ATieFighter::BeginPlay() {
 	Super::BeginPlay();
+	GetWorldTimerManager().SetTimer(FireTimerHandle, this, &ATieFighter::AdvanceFireTimer, 0.01f, true);
 }
 
 // Called every frame
@@ -47,11 +48,46 @@ void ATieFighter::Tick( float DeltaTime ) {
 }
 
 void ATieFighter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	if (OtherActor != this && OtherActor->IsA(ABullet::StaticClass())) {
+	if (OtherActor != this && 
+		OtherActor->IsA(ABullet::StaticClass()) &&
+		!OtherActor->IsA(ProjectileClass)) {
 		auto Player = Cast<ASketchCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 		auto Bullet = Cast<ABullet>(OtherActor);
 		Player->IncrementScore(ScoreValue);
 		Bullet->Destroy();
 		this->Destroy();
+	}
+}
+
+void ATieFighter::AdvanceFireTimer() {
+	RemainingFireTime--;
+
+	if (RemainingFireTime <= 0) {
+		RemainingFireTime = FMath::RandRange(100, 200);
+		ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+		FVector Normal = (Character->GetActorLocation() - GetActorLocation());
+		Normal.Normalize();
+		FireInDirection(Normal);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString("Firing"));
+		GetWorldTimerManager().ClearTimer(FireTimerHandle);
+		GetWorldTimerManager().SetTimer(FireTimerHandle, this, &ATieFighter::AdvanceFireTimer, 0.01f, true);
+	}
+}
+
+void ATieFighter::FireInDirection(const FVector& ShootDirection) {
+	// Attempt to fire a projectile.
+	if (ProjectileClass) {
+		UWorld* World = GetWorld();
+		if (World) {
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+			SpawnParams.Instigator = Instigator;
+			// Spawn the projectile at the muzzle.
+			ABullet* Projectile = World->SpawnActor<ABullet>(ProjectileClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+			if (Projectile) {
+				// Set the projectile's initial trajectory.
+				Projectile->FireInDirection(ShootDirection);
+			}
+		}
 	}
 }

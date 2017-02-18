@@ -8,6 +8,13 @@
 UCLASS()
 class SKETCHWARS_API ATieFighter : public AActor {
 	GENERATED_BODY()
+
+private:
+	// Properties for the enemy shooting behaviour
+	FTimerHandle FireTimerHandle;
+	int32 RemainingFireTime;
+	void AdvanceFireTimer();
+	void FireInDirection(const FVector& ShootDirection);
 	
 public:	
 	// Sets default values for this actor's properties
@@ -26,6 +33,10 @@ public:
 	// Projectile movement component.
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 	UProjectileMovementComponent* ProjectileMovementComponent;
+
+	// Projectile class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class ABullet> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Scoring")
 	int32 ScoreValue;
