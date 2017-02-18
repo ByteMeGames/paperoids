@@ -68,7 +68,6 @@ void ATieFighter::AdvanceFireTimer() {
 		FVector Normal = (Character->GetActorLocation() - GetActorLocation());
 		Normal.Normalize();
 		FireInDirection(Normal);
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString("Firing"));
 		GetWorldTimerManager().ClearTimer(FireTimerHandle);
 		GetWorldTimerManager().SetTimer(FireTimerHandle, this, &ATieFighter::AdvanceFireTimer, 0.01f, true);
 	}
