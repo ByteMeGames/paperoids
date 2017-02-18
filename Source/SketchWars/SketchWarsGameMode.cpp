@@ -22,7 +22,7 @@ void ASketchWarsGameMode::Tick(float DeltaSeconds) {
 		TArray<AActor*> FoundSpawns;
 		UGameplayStatics::GetAllActorsOfClass(World, ATargetPoint::StaticClass(), FoundSpawns);
 
-		if (FoundActors.Num() > 0 && FoundActors.Num() <= 4) {
+		if (FoundActors.Num() <= 5) {
 			int32 index = FMath::RandRange(0, FoundSpawns.Num() - 1);
 			FActorSpawnParameters SpawnParams;
 			SpawnParams.Owner = this;
