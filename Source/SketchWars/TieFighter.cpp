@@ -48,9 +48,7 @@ void ATieFighter::Tick( float DeltaTime ) {
 }
 
 void ATieFighter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	if (OtherActor != this && 
-		OtherActor->IsA(ABullet::StaticClass()) &&
-		!OtherActor->IsA(ProjectileClass)) {
+	if (OtherActor != this && OtherActor->IsA(ABullet::StaticClass())) {
 		auto Player = Cast<ASketchCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
 		auto Bullet = Cast<ABullet>(OtherActor);
 		Player->IncrementScore(ScoreValue);
