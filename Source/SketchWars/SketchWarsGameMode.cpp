@@ -8,7 +8,14 @@
 
 void ASketchWarsGameMode::BeginPlay() {
 	Super::BeginPlay();
-	SpawnTieFighter();
+	RemainingEnemySpawnTime = FMath::RandRange(1000, 2000);
+	GetWorldTimerManager().SetTimer(
+		SpawnEnemyTimerHandle,
+		this,
+		&ASketchWarsGameMode::AdvanceRemainingEnemySpawnTime,
+		0.01f,
+		true
+	);
 }
 
 void ASketchWarsGameMode::Tick(float DeltaSeconds) {
@@ -54,6 +61,22 @@ void ASketchWarsGameMode::SpawnTieFighter() {
 			FVector((GoRight) ? 0.0f : 1024.0f, 0.0f, SpawnZ),
 			FRotator((GoRight) ?  0.0f : 180.0f, 0.0f, 0.0f),
 			SpawnParams
+		);
+	}
+}
+
+void ASketchWarsGameMode::AdvanceRemainingEnemySpawnTime() {
+	RemainingEnemySpawnTime--;
+	if (RemainingEnemySpawnTime <= 0) {
+		SpawnTieFighter();
+		RemainingEnemySpawnTime = FMath::RandRange(1000, 2000);
+		GetWorldTimerManager().ClearTimer(SpawnEnemyTimerHandle);
+		GetWorldTimerManager().SetTimer(
+			SpawnEnemyTimerHandle,
+			this,
+			&ASketchWarsGameMode::AdvanceRemainingEnemySpawnTime,
+			0.01f,
+			true
 		);
 	}
 }

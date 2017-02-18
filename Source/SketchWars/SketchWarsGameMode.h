@@ -11,6 +11,12 @@
 UCLASS()
 class SKETCHWARS_API ASketchWarsGameMode : public AGameMode {
 	GENERATED_BODY()
+
+private:
+	// Properties for the enemy shooting behaviour
+	FTimerHandle SpawnEnemyTimerHandle;
+	int32 RemainingEnemySpawnTime;
+	void AdvanceRemainingEnemySpawnTime();
 	
 public:
 	// Called when the game starts or when spawned

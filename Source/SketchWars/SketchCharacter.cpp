@@ -87,10 +87,14 @@ void ASketchCharacter::Fire() {
 }
 
 void ASketchCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector Impulse, const FHitResult & HitResult) {
-	if (OtherActor != this && 
-		(OtherActor->IsA(AAsteroid::StaticClass()) ||
-		(OtherActor->IsA(ABullet::StaticClass()))) && !IsRespawning) {
-		this->Respawn();
+	if (OtherActor != this) {
+		if (OtherActor->IsA(ABullet::StaticClass())) {
+			OtherActor->Destroy();
+		}
+		if (OtherActor->IsA(AAsteroid::StaticClass()) ||
+			(OtherActor->IsA(ABullet::StaticClass())) && !IsRespawning) {
+			this->Respawn();
+		}
 	}
 }
 
