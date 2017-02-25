@@ -65,7 +65,7 @@ void ATieFighter::AdvanceFireTimer() {
 		ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 		FVector Normal = (Character->GetActorLocation() - GetActorLocation());
 		Normal.Normalize();
-		FireInDirection(Normal);
+		FireInDirection(Normal.RotateAngleAxis(FMath::RandRange(-15, 15), GetActorRightVector()));
 		GetWorldTimerManager().ClearTimer(FireTimerHandle);
 		GetWorldTimerManager().SetTimer(FireTimerHandle, this, &ATieFighter::AdvanceFireTimer, 0.01f, true);
 	}
