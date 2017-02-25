@@ -65,6 +65,7 @@ void ASketchCharacter::TurnRight(float val) {
 }
 
 void ASketchCharacter::MoveUp(float val) {
+	GetSprite()->SetFlipbook((val != 0.0f) ? AccelerateFlipbook : IdleFlipbook);
 	AddMovementInput(GetActorUpVector(), val*0.5f);
 }
 

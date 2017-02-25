@@ -47,6 +47,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	TSubclassOf<class ABullet> ProjectileClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = Flipbooks)
+	class UPaperFlipbook* IdleFlipbook;
+
+	UPROPERTY(EditDefaultsOnly, Category = Flipbooks)
+	class UPaperFlipbook* AccelerateFlipbook;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lives")
 	int32 NumLives;
 
