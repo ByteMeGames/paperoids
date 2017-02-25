@@ -92,8 +92,8 @@ void ASketchCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 		if (OtherActor->IsA(ABullet::StaticClass())) {
 			OtherActor->Destroy();
 		}
-		if (OtherActor->IsA(AAsteroid::StaticClass()) ||
-			(OtherActor->IsA(ABullet::StaticClass())) && !IsRespawning) {
+
+		if (!IsRespawning) {
 			this->Respawn();
 		}
 	}
